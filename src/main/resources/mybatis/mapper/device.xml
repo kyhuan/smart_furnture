@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xupt.mapper.DeviceMapper">
+    <insert id="add" parameterType="Device" keyProperty="id">
+        INSERT INTO device(device_name,device_state,class_id,device_ch_name,is_add,img_src,action,device_code,device_password) VALUES (#{deviceName},#{deviceState},#{classId},#{deviceChName},#{isAdd},#{imgSrc},#{action},#{deviceCode},#{devicePassword})
+    </insert>
+    <select id="queryByCAP" resultType="Device">
+        SELECT * FROM device WHERE device_code = #{deviceCode} AND device_password = #{devicePassword}
+    </select>
+
+    <select id="queryByUAD" resultType="Device">
+
+        SELECT * FROM device   where device_id in ( SELECT device_id FROM cus_scene WHERE user_id = #{userId} AND cus_id = #{cusId} );
+    </select>
+    <update id="updataDeviceState">
+        UPDATE device  SET device_state = #{deviceState} WHERE device_id = #{deviceId}
+    </update>
+    <select id="queryById" parameterType="Integer" resultType="Device">
+        SELECT * FROM device WHERE device_id = #{deviceId}
+    </select>
+    <update id="updataDevicePassword">
+        UPDATE device SET device_password = #{newPassword} WHERE device_id = #{deviceId} AND password = #{oldPassword}
+    </update>
+    <select id="queryByCode" resultType="Device">
+        SELECT * FROM device WHERE device_code = #{deviceCode}
+    </select>
+</mapper>
